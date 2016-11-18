@@ -17,10 +17,19 @@
       <tr>
         <td><%= blog.title %></td>
         <td><%= blog.message %></td>
-        <td><%= blog.user %></td>
+        <td><%= blog.user.full_name %></td>
         <td><%= link_to 'Show', blog %></td>
-        <td><%= link_to 'Edit', edit_blog_path(blog) %></td>
-        <td><%= link_to 'Destroy', blog, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <!-- Only show the edit and destroy option for blogs created by the logged in user. -->
+          <% if !cookies[:user_id].nil? && cookies[:user_id].to_i == blog.user.id %>
+            <%= link_to 'Edit', edit_blog_path(blog) %>
+          <% end %>
+         </td>
+        <td>
+          <% if !cookies[:user_id].nil? && cookies[:user_id].to_i == blog.user.id %>
+            <%= link_to 'Destroy', blog, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>

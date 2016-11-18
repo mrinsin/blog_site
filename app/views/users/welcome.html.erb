@@ -5,4 +5,14 @@
 <br>
 <hr>
 
-<a href='/blogs/index'>Start blogging!</a>
+<a href="/blogs/new">Start blogging!</a>
+
+<p>
+  <ul>
+    <% @user.blogs.each do |blog| %>
+    <li> <a href="/blogs/<%= blog.id %>"> <%= blog.title%> </a> </li>
+    <% end %>
+  </ul>
+</p>
+
+<a href="/users/logout">Log Out</a>

@@ -17,8 +17,17 @@
         <td><%= user.full_name %></td>
         <td><%= user.email %></td>
         <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <!-- Only show edit and destroy user info option for the user thats logged in -->
+          <% if !cookies[:user_id].nil? && cookies[:user_id].to_i == user.id%>
+            <%= link_to 'Edit', edit_user_path(user) %>
+          <% end %>
+        </td>
+        <td>
+          <% if !cookies[:user_id].nil? && cookies[:user_id].to_i == user.id%>
+            <%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -31,12 +40,17 @@
 <br>
 <hr>
 <br>
-<h2>Log In:</h2><br>
 
-<form action="/users/login" method="post">
-  Login Email: <br>
-  <input type="text" name="login_email" placeholder="Email" required/> <br>
-  Password: <br>
-  <input type="password" name="login_password" placeholder="Password" required/> <br>
-  <input type="submit" value="Log In" />
-</form>
+<% if !cookies.has_key?(:user_id) %>
+  <h2>Log In:</h2><br>
+
+  <form action="/users/login" method="post">
+    Login Email: <br>
+    <input type="text" name="login_email" placeholder="Email" required/> <br>
+    Password: <br>
+    <input type="password" name="login_password" placeholder="Password" required/> <br>
+    <input type="submit" value="Log In" />
+  </form>
+<% else %>
+  <a href="/users/logout">Log Out</a>
+<% end %>

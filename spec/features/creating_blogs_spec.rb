@@ -4,6 +4,7 @@ RSpec.feature "CreatingBlogs", type: :feature do
   #As a logged in user, I can create a blog post with title and messgae on the welcome back page.
   context 'Creating a blog post' do
     Steps 'To create and submit a blog post' do
+      #create a new user in the database using the registration form, and log him in
       Given 'I have registered and logged in as a user' do
         visit '/'
         click_on 'New User'
@@ -20,16 +21,30 @@ RSpec.feature "CreatingBlogs", type: :feature do
         expect(page).to have_content('Welcome back, Sang Yub Kim!')
       end
       Then 'I can create a blog post' do
-        click_on "Start blogging!"
+        fill_in "title", with: "First Post!"
+        fill_in "message", with: "Hej hej hej this is my first post!"
+        click_on "Create Blog"
+      end
+      And 'I can create another blog post' do
+        click_on "Back"
         click_on "New Blog"
-        fill_in "Title", with: "First Post!"
-        fill_in "Message", with: "Hej hej hej this is my first post!"
+        fill_in "Title", with: "Second blog post evaaa"
+        fill_in "Message", with: "LOVE ME BLUEEEEEEEEEEEEE"
         click_on "Create Blog"
       end
       #As a logged in user, I can see all my blog posts with the title on the welcome back page
       And "I can see all my blog posts on the page" do
-        click
+        click_on "Back"
+        expect(page).to have_content("First Post!")
+        expect(page).to have_content("Second blog post evaaa")
       end
+      #As a logged in user, when I click on a blog title on the Welcome Back page, I am taken to a page showing the blog title and message.
+      Then 'I can click on a blog title and be shown the blog title and message in a new page' do
+        visit '/users/welcome'
+        click_on "First Post!"
+        expect(page).to have_content("Hej hej hej this is my first post!")
+      end
+
     end #end of steps
   end #end of context
 

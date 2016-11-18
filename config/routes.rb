@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   get 'blogs/index'
 
+  get 'users/logout'
+
   resources :users
 
   resources :blogs

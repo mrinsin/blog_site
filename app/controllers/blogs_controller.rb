@@ -4,12 +4,13 @@ class BlogsController < ApplicationController
   # GET /blogs
   # GET /blogs.json
   def index
-    @user = User.find(cookies[:user_id])
+    @blogs = Blog.all
   end
 
   # GET /blogs/1
   # GET /blogs/1.json
   def show
+    @blog = Blog.find(params[:id])
   end
 
   # GET /blogs/new
@@ -27,6 +28,8 @@ class BlogsController < ApplicationController
   # POST /blogs.json
   def create
     @blog = Blog.new(blog_params)
+    @user = User.find(cookies[:user_id])
+    @blog.user = @user
 
     respond_to do |format|
       if @blog.save

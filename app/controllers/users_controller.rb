@@ -4,7 +4,12 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    if !cookies[:user_id].nil?
+      redirect_to '/users/welcome'
+    else
+      @users = User.all
+      render :index
+    end
   end
 
   #When the login button is clicked, the server sends info here
@@ -40,6 +45,10 @@ class UsersController < ApplicationController
     @user = User.find(cookies[:user_id])
   end
 
+  def logout
+    cookies.delete :user_id
+    redirect_to '/'
+  end
 
   # GET /users/1
   # GET /users/1.json
