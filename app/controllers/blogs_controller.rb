@@ -22,7 +22,7 @@ class BlogsController < ApplicationController
       @user = User.find(cookies[:user_id])
       @blog.user = @user
     else
-      #otherwise dont allow the client to post blogs
+      #otherwise dont allow the client to post new blogs
       flash[:blog_notice] = "You must be logged in to start blogging!"
       redirect_to '/blogs/index'
     end
