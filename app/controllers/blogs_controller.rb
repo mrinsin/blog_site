@@ -16,8 +16,16 @@ class BlogsController < ApplicationController
   # GET /blogs/new
   def new
     @blog = Blog.new
-    @user = User.find(cookies[:user_id])
-    @blog.user = @user
+    #if a user is logged in,
+    if !cookies[:user_id].nil?
+      #set that user as the uer of the blog post being created
+      @user = User.find(cookies[:user_id])
+      @blog.user = @user
+    else
+      #otherwise dont allow the client to post blogs
+      flash[:blog_notice] = "You must be logged in to start blogging!"
+      redirect_to '/blogs/index'
+    end
   end
 
   # GET /blogs/1/edit
@@ -28,8 +36,10 @@ class BlogsController < ApplicationController
   # POST /blogs.json
   def create
     @blog = Blog.new(blog_params)
-    @user = User.find(cookies[:user_id])
-    @blog.user = @user
+    if !cookies[:user_id].nil?
+      @user = User.find(cookies[:user_id])
+      @blog.user = @user
+    end
 
     respond_to do |format|
       if @blog.save
